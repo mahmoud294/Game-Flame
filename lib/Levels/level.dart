@@ -19,7 +19,6 @@ class Level1 extends World {
             position: Vector2(spawnPoint.x, spawnPoint.y),
           );
           add(player);
-
           break;
         default:
       }

@@ -9,7 +9,8 @@ enum PlayerState { idle, running }
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<ActionAdventure> {
   final String character;
-  Player({required this.character, Vector2? position}):super(position: position);
+  Player({required this.character, Vector2? position})
+      : super(position: position);
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runinningAnimation;
   final double stepTime = 0.05;
@@ -21,13 +22,16 @@ class Player extends SpriteAnimationGroupComponent
 
   void _loadAllAnimation() {
     inspect(game.images);
-    idleAnimation = _spriteAnimation("Idle",11);
-    runinningAnimation = _spriteAnimation("Run",12);
-    animations = {PlayerState.idle: idleAnimation,PlayerState.running:runinningAnimation};
+    idleAnimation = _spriteAnimation("Idle", 11);
+    runinningAnimation = _spriteAnimation("Run", 12);
+    animations = {
+      PlayerState.idle: idleAnimation,
+      PlayerState.running: runinningAnimation,
+    };
     current = PlayerState.running;
   }
 
-  SpriteAnimation _spriteAnimation(String state ,int amount) {
+  SpriteAnimation _spriteAnimation(String state, int amount) {
     return SpriteAnimation.fromFrameData(
       game.images.fromCache("Main Characters/$character/$state (32x32).png"),
       SpriteAnimationData.sequenced(
