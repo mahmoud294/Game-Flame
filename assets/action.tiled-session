@@ -1,0 +1,51 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "worlds/level-01.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 344.99999999999994,
+                "y": 206.33333333333337
+            }
+        },
+        "worlds/level-01.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "worlds/world.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "worlds/worlds.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "D:/Flutter PlayGround/action_adventure/assets/Free/Terrain",
+    "map.height": 23,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 40,
+    "openFiles": [
+    ],
+    "project": "action.tiled-project",
+    "recentFiles": [
+        "worlds/world.tsx",
+        "worlds/level-01.tmx",
+        "worlds/level-01.tsx",
+        "worlds/worlds.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
