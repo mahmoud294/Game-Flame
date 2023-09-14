@@ -28,7 +28,7 @@
 112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112
 </data>
  </layer>
- <objectgroup id="2" name="SpawnLayer">
+ <objectgroup id="2" name="SpawnLayer" class="Player">
   <object id="3" name="Player" type="Player" x="96.8421" y="240.702" width="32" height="32"/>
  </objectgroup>
 </map>
