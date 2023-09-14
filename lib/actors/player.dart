@@ -11,16 +11,25 @@ enum PlayerDirection { left, right, none }
 
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<ActionAdventure>, KeyboardHandler {
-  final String character;
   Player({this.character = "Ninja Frog", Vector2? position})
       : super(position: position);
+
+  final String character;
+
   late final SpriteAnimation idleAnimation;
+
   late final SpriteAnimation runinningAnimation;
+
   final double stepTime = 0.05;
+
   PlayerDirection playerDirection = PlayerDirection.none;
+
   double moveSpeed = 100;
+
   Vector2 velocity = Vector2.zero();
+
   bool isFacingRight = true;
+
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimation();

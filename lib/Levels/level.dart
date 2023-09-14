@@ -17,10 +17,6 @@ class Level1 extends World {
     for (final spawnPoint in spawnLayer!.objects) {
       switch (spawnPoint.class_) {
         case "Player":
-          // final player = Player(
-          //   character: "Ninja Frog",
-          //   position: Vector2(spawnPoint.x, spawnPoint.y),
-          // );
           player.position = Vector2(spawnPoint.x, spawnPoint.y);
           add(player);
           break;
