@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:action_adventure/Levels/level.dart';
 import 'package:action_adventure/actors/player.dart';
@@ -15,7 +16,8 @@ class ActionAdventure extends FlameGame
   @override
   Color backgroundColor() => const Color(0xff211f30);
   late final CameraComponent cam;
-
+  bool showJoystick =
+      Platform.isAndroid || Platform.isIOS || Platform.isFuchsia;
   @override
   FutureOr<void> onLoad() async {
     images.prefix = "assets/Free/";
@@ -28,13 +30,13 @@ class ActionAdventure extends FlameGame
     );
     cam.viewfinder.anchor = Anchor.topLeft;
     addAll([world, cam]);
-    addJoystick();
+    if (showJoystick) addJoystick();
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
-    updateJoystick();
+    if (showJoystick) updateJoystick();
     super.update(dt);
   }
 
