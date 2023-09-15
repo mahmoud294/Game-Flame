@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:action_adventure/Levels/level.dart';
-import 'package:action_adventure/actors/player.dart';
+import 'package:action_adventure/Components/level.dart';
+import 'package:action_adventure/Components/player.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -60,13 +60,13 @@ class ActionAdventure extends FlameGame
   void updateJoystick() {
     switch (joystickComponent.direction) {
       case JoystickDirection.left:
-        player.playerDirection = PlayerDirection.left;
+        // player.playerDirection = PlayerDirection.left;
         break;
       case JoystickDirection.right:
-        player.playerDirection = PlayerDirection.right;
+        // player.playerDirection = PlayerDirection.right;
         break;
       case JoystickDirection.idle:
-        player.playerDirection = PlayerDirection.none;
+        // player.playerDirection = PlayerDirection.none;
         break;
       default:
     }
