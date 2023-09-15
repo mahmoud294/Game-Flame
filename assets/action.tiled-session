@@ -3,11 +3,10 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "tiles/level-02.tmx",
+    "activeFile": "tiles/level-01.tmx",
     "expandedProjectPaths": [
-        "worlds",
         ".",
-        "tiles"
+        "worlds"
     ],
     "fileStates": {
         "tiles/level-01.tmx": {
@@ -25,8 +24,8 @@
             "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 346.5,
-                "y": 224.5
+                "x": 320.5,
+                "y": 184.5
             }
         },
         "tiles/level-02.tsx": {
@@ -71,9 +70,9 @@
     ],
     "project": "action.tiled-project",
     "recentFiles": [
-        "tiles/level-01.tmx",
-        "tiles/world.tsx",
         "tiles/level-02.tmx",
+        "tiles/world.tsx",
+        "tiles/level-01.tmx",
         "tiles/level-02.tsx",
         "worlds/world.tsx",
         "worlds/level-01.tmx",
