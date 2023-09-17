@@ -10,11 +10,11 @@
     ],
     "fileStates": {
         "tiles/level-01.tmx": {
-            "scale": 1.4249999999999998,
-            "selectedLayer": 0,
+            "scale": 1.5,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 320.3508771929825,
-                "y": 184.21052631578954
+                "x": 319.66666666666663,
+                "y": 183.66666666666663
             }
         },
         "tiles/level-02.tmx": {
@@ -24,7 +24,7 @@
             "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 320.5,
+                "x": 319.5,
                 "y": 184.5
             }
         },
