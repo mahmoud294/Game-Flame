@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:action_adventure/Components/background_tile.dart';
 import 'package:action_adventure/Components/collision_block.dart';
+import 'package:action_adventure/Components/fruit_component.dart';
 import 'package:action_adventure/Components/player.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
@@ -15,18 +17,23 @@ class Level1 extends World {
   FutureOr<void> onLoad() async {
     level = await TiledComponent.load("$levelName.tmx", Vector2.all(16));
     add(level);
-    final spawnLayer = level.tileMap.getLayer<ObjectGroup>("SpawnLayer");
-    if (spawnLayer != null) {
-      for (final spawnPoint in spawnLayer.objects) {
-        switch (spawnPoint.class_) {
-          case "Player":
-            player.position = Vector2(spawnPoint.x, spawnPoint.y);
-            add(player);
-            break;
-          default:
-        }
-      }
-    }
+    _addCollisions();
+    _spawningObjects();
+
+    // add(Player(character: "Ninja Frog"));
+    return super.onLoad();
+  }
+
+  // void _scrollingBackground() {
+  //   final backgroundLayer = level.tileMap.getLayer("Background");
+  //   if (backgroundLayer != null) {
+  //     final backgroundColor =
+  //         backgroundLayer.properties.getValue("Backgroundcolor");
+  //     final backgroundTile = BackgroundTile(color: backgroundColor,position: Vector2.all(0));
+  //   }
+  // }
+
+  void _addCollisions() {
     final collisionLayer = level.tileMap.getLayer<ObjectGroup>("Collisions");
     if (collisionLayer != null) {
       for (final coillision in collisionLayer.objects) {
@@ -51,7 +58,28 @@ class Level1 extends World {
       }
       player.collisionBlocks = collisionBlocks;
     }
-    // add(Player(character: "Ninja Frog"));
-    return super.onLoad();
+  }
+
+  void _spawningObjects() {
+    final spawnLayer = level.tileMap.getLayer<ObjectGroup>("SpawnLayer");
+    if (spawnLayer != null) {
+      for (final spawnPoint in spawnLayer.objects) {
+        switch (spawnPoint.class_) {
+          case "Player":
+            player.position = Vector2(spawnPoint.x, spawnPoint.y);
+            add(player);
+            break;
+          case "fruit":
+            final fruit = Fruit(
+              fruitName: spawnPoint.name,
+              position: Vector2(spawnPoint.x, spawnPoint.y),
+              size: Vector2(spawnPoint.width, spawnPoint.height),
+            );
+            add(fruit);
+            break;
+          default:
+        }
+      }
+    }
   }
 }
