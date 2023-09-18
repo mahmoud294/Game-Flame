@@ -9,7 +9,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 class ActionAdventure extends FlameGame
-    with HasKeyboardHandlerComponents, DragCallbacks,HasCollisionDetection {
+    with HasKeyboardHandlerComponents, DragCallbacks, HasCollisionDetection {
   final Player player = Player();
 
   late JoystickComponent joystickComponent;

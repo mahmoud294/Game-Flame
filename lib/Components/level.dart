@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:action_adventure/Components/background_tile.dart';
 import 'package:action_adventure/Components/collision_block.dart';
 import 'package:action_adventure/Components/fruit_component.dart';
 import 'package:action_adventure/Components/player.dart';
+import 'package:action_adventure/Components/saw.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 
@@ -76,6 +76,20 @@ class Level1 extends World {
               size: Vector2(spawnPoint.width, spawnPoint.height),
             );
             add(fruit);
+            break;
+          case "Saw":
+            final isvertical =
+                spawnPoint.properties.getValue("isVertical") as bool;
+            final offNeg = spawnPoint.properties.getValue("offNeg") as double;
+            final offPos = spawnPoint.properties.getValue("offPos") as double;
+            final saw = Saw(
+              isVertical: isvertical,
+              offNeg: offNeg,
+              offPos: offPos,
+              position: Vector2(spawnPoint.x, spawnPoint.y),
+              size: Vector2(spawnPoint.width, spawnPoint.height),
+            );
+            add(saw);
             break;
           default:
         }
