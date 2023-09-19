@@ -3,27 +3,33 @@ import 'dart:async';
 import 'package:action_adventure/Components/collision_block.dart';
 import 'package:action_adventure/Components/custom_hitbox.dart';
 import 'package:action_adventure/Components/fruit_component.dart';
+import 'package:action_adventure/Components/saw.dart';
 import 'package:action_adventure/Components/util.dart';
 import 'package:action_adventure/action_adventure.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
-enum PlayerState { idle, running, jumping, falling }
+enum PlayerState { idle, running, jumping, falling, disappearing, appearing }
 
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<ActionAdventure>, KeyboardHandler, CollisionCallbacks {
   String character;
+  bool died = false;
+
   Player({
     position,
     this.character = 'Ninja Frog',
   }) : super(position: position);
-
+  bool loading = false;
+  Vector2? firstPosition;
   final double stepTime = 0.05;
+  late final SpriteAnimation appearingAnimation;
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;
   late final SpriteAnimation jumpingAnimation;
   late final SpriteAnimation fallingAnimation;
+  late final SpriteAnimation disappearingAnimation;
 
   final double _gravity = 9.8;
   final double _jumpForce = 280;
@@ -56,11 +62,13 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void update(double dt) {
-    _updatePlayerState();
-    _updatePlayerMovement(dt);
-    _checkHorizontalCollisions();
-    _applyGravity(dt);
-    _checkVerticalCollisions();
+    if (!died) {
+      _updatePlayerState();
+      _updatePlayerMovement(dt);
+      _checkHorizontalCollisions();
+      _applyGravity(dt);
+      _checkVerticalCollisions();
+    }
     super.update(dt);
   }
 
@@ -84,6 +92,8 @@ class Player extends SpriteAnimationGroupComponent
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Fruit) {
       other.onCollidedFruit();
+    } else if (other is Saw) {
+      _respawn();
     }
     super.onCollision(intersectionPoints, other);
   }
@@ -93,6 +103,8 @@ class Player extends SpriteAnimationGroupComponent
     runningAnimation = _spriteAnimation('Run', 12);
     jumpingAnimation = _spriteAnimation('Jump', 1);
     fallingAnimation = _spriteAnimation('Fall', 1);
+    disappearingAnimation = _spriteAnimation("Hit", 7);
+    appearingAnimation = _appearingAnimation();
 
     // List of all animations
     animations = {
@@ -100,9 +112,10 @@ class Player extends SpriteAnimationGroupComponent
       PlayerState.running: runningAnimation,
       PlayerState.jumping: jumpingAnimation,
       PlayerState.falling: fallingAnimation,
+      PlayerState.disappearing: disappearingAnimation,
+      PlayerState.appearing: appearingAnimation,
     };
 
-    // Set current animation
     current = PlayerState.idle;
   }
 
@@ -117,7 +130,21 @@ class Player extends SpriteAnimationGroupComponent
     );
   }
 
+  SpriteAnimation _appearingAnimation() {
+    return SpriteAnimation.fromFrameData(
+      game.images.fromCache('Main Characters/Appearing (96x96).png'),
+      SpriteAnimationData.sequenced(
+        amount: 7,
+        stepTime: stepTime,
+        textureSize: Vector2.all(96),
+      ),
+    );
+  }
+
   void _updatePlayerState() {
+    // if(loading){
+
+    // }
     PlayerState playerState = PlayerState.idle;
 
     if (velocity.x < 0 && scale.x > 0) {
@@ -134,7 +161,7 @@ class Player extends SpriteAnimationGroupComponent
 
     // Checks if jumping, set to jumping
     if (velocity.y < 0) playerState = PlayerState.jumping;
-
+    // if (died) playerState = PlayerState.disappearing;
     current = playerState;
   }
 
@@ -205,5 +232,28 @@ class Player extends SpriteAnimationGroupComponent
         }
       }
     }
+  }
+
+  void _respawn() {
+    died = true;
+    current = PlayerState.disappearing;
+    Future.delayed(
+      const Duration(milliseconds: 350),
+      () {
+        scale.x = 1;
+        position =
+            Vector2(firstPosition!.x, firstPosition!.y) - Vector2.all(32);
+        current = PlayerState.appearing;
+        Future.delayed(const Duration(milliseconds: 350), () {
+          velocity = Vector2.zero();
+          position = Vector2(firstPosition!.x, firstPosition!.y);
+          _updatePlayerState();
+          Future.delayed(
+            const Duration(milliseconds: 400),
+            () => died = false,
+          );
+        });
+      },
+    );
   }
 }

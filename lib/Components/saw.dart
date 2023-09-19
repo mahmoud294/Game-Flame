@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:action_adventure/action_adventure.dart';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
 class Saw extends SpriteAnimationComponent with HasGameRef<ActionAdventure> {
@@ -21,6 +22,12 @@ class Saw extends SpriteAnimationComponent with HasGameRef<ActionAdventure> {
   int moveDirection = 1;
   @override
   FutureOr<void> onLoad() {
+    debugMode = true;
+    add(
+      RectangleHitbox(
+        collisionType: CollisionType.passive,
+      ),
+    );
     priority = -20;
     if (isVertical) {
       negRange = position.y - offNeg * tileSize;
@@ -43,22 +50,25 @@ class Saw extends SpriteAnimationComponent with HasGameRef<ActionAdventure> {
   @override
   void update(double dt) {
     moving(dt);
-    // TODO: implement update
     super.update(dt);
   }
 
   void moving(double dt) {
     if (isVertical) {
       if (position.y >= posRange) {
+        animation = animation!.reversed();
         moveDirection = -1;
       } else if (position.y <= negRange) {
+        animation = animation!.reversed();
         moveDirection = 1;
       }
       position.y += moveDirection * moveSpeed * dt;
     } else {
       if (position.x >= posRange) {
+        animation = animation!.reversed();
         moveDirection = -1;
       } else if (position.x <= negRange) {
+        animation = animation!.reversed();
         moveDirection = 1;
       }
       position.x += moveDirection * moveSpeed * dt;

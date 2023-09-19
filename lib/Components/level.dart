@@ -67,6 +67,7 @@ class Level1 extends World {
         switch (spawnPoint.class_) {
           case "Player":
             player.position = Vector2(spawnPoint.x, spawnPoint.y);
+            player.firstPosition = Vector2(spawnPoint.x, spawnPoint.y);
             add(player);
             break;
           case "fruit":
