@@ -22,7 +22,6 @@ class Saw extends SpriteAnimationComponent with HasGameRef<ActionAdventure> {
   int moveDirection = 1;
   @override
   FutureOr<void> onLoad() {
-    debugMode = true;
     add(
       RectangleHitbox(
         collisionType: CollisionType.passive,

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:action_adventure/Components/checkpooint.dart';
 import 'package:action_adventure/Components/collision_block.dart';
 import 'package:action_adventure/Components/custom_hitbox.dart';
 import 'package:action_adventure/Components/fruit_component.dart';
@@ -10,7 +11,15 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
-enum PlayerState { idle, running, jumping, falling, disappearing, appearing }
+enum PlayerState {
+  idle,
+  running,
+  jumping,
+  falling,
+  disappearing,
+  appearing,
+  fading
+}
 
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<ActionAdventure>, KeyboardHandler, CollisionCallbacks {
@@ -22,6 +31,7 @@ class Player extends SpriteAnimationGroupComponent
     this.character = 'Ninja Frog',
   }) : super(position: position);
   bool loading = false;
+  bool reachedCheckedPoint = false;
   Vector2? firstPosition;
   final double stepTime = 0.05;
   late final SpriteAnimation appearingAnimation;
@@ -30,6 +40,7 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation jumpingAnimation;
   late final SpriteAnimation fallingAnimation;
   late final SpriteAnimation disappearingAnimation;
+  late final SpriteAnimation fadingAnimation;
 
   final double _gravity = 9.8;
   final double _jumpForce = 280;
@@ -62,7 +73,7 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void update(double dt) {
-    if (!died) {
+    if (!died && !reachedCheckedPoint) {
       _updatePlayerState();
       _updatePlayerMovement(dt);
       _checkHorizontalCollisions();
@@ -94,6 +105,8 @@ class Player extends SpriteAnimationGroupComponent
       other.onCollidedFruit();
     } else if (other is Saw) {
       _respawn();
+    } else if (other is CheckPoint) {
+      _reachCheckPoint();
     }
     super.onCollision(intersectionPoints, other);
   }
@@ -105,6 +118,7 @@ class Player extends SpriteAnimationGroupComponent
     fallingAnimation = _spriteAnimation('Fall', 1);
     disappearingAnimation = _spriteAnimation("Hit", 7);
     appearingAnimation = _appearingAnimation();
+    fadingAnimation = _fadingAnimation();
 
     // List of all animations
     animations = {
@@ -114,6 +128,7 @@ class Player extends SpriteAnimationGroupComponent
       PlayerState.falling: fallingAnimation,
       PlayerState.disappearing: disappearingAnimation,
       PlayerState.appearing: appearingAnimation,
+      PlayerState.fading: fadingAnimation,
     };
 
     current = PlayerState.idle;
@@ -133,6 +148,17 @@ class Player extends SpriteAnimationGroupComponent
   SpriteAnimation _appearingAnimation() {
     return SpriteAnimation.fromFrameData(
       game.images.fromCache('Main Characters/Appearing (96x96).png'),
+      SpriteAnimationData.sequenced(
+        amount: 7,
+        stepTime: stepTime,
+        textureSize: Vector2.all(96),
+      ),
+    );
+  }
+
+  SpriteAnimation _fadingAnimation() {
+    return SpriteAnimation.fromFrameData(
+      game.images.fromCache('Main Characters/Desappearing (96x96).png'),
       SpriteAnimationData.sequenced(
         amount: 7,
         stepTime: stepTime,
@@ -253,6 +279,27 @@ class Player extends SpriteAnimationGroupComponent
             () => died = false,
           );
         });
+      },
+    );
+  }
+
+  void _reachCheckPoint() {
+    reachedCheckedPoint = true;
+    if (scale.x > 0) {
+      position = position - Vector2.all(32);
+    } else if (scale.x < 0) {
+      position = position + Vector2(32, -32);
+    }
+    current = PlayerState.fading;
+    Future.delayed(
+      const Duration(milliseconds: 350),
+      () {
+        reachedCheckedPoint = false;
+        position = Vector2.all(-640);
+        Future.delayed(
+          const Duration(seconds: 3),
+          () {},
+        );
       },
     );
   }

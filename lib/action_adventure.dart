@@ -11,25 +11,20 @@ import 'package:flutter/material.dart';
 class ActionAdventure extends FlameGame
     with HasKeyboardHandlerComponents, DragCallbacks, HasCollisionDetection {
   final Player player = Player();
-
+  List<String> levelList = ["level-01", "level-02"];
+  int levelIndex = 0;
   late JoystickComponent joystickComponent;
   @override
   Color backgroundColor() => const Color(0xff211f30);
-  late final CameraComponent cam;
+  late CameraComponent cam;
   bool showJoystick =
       Platform.isAndroid || Platform.isIOS || Platform.isFuchsia;
   @override
   FutureOr<void> onLoad() async {
     images.prefix = "assets/Free/";
-    final world = Level1(levelName: "level-01", player: player);
+
     await images.loadAllImages();
-    cam = CameraComponent.withFixedResolution(
-      world: world,
-      width: 640,
-      height: 360,
-    );
-    cam.viewfinder.anchor = Anchor.topLeft;
-    addAll([world, cam]);
+    _loadLevel();
     if (showJoystick) addJoystick();
     return super.onLoad();
   }
@@ -70,5 +65,28 @@ class ActionAdventure extends FlameGame
         break;
       default:
     }
+  }
+
+  void loadnextLevel() {
+    if (levelIndex < levelList.length) {
+      levelIndex++;
+      _loadLevel();
+    }
+  }
+
+  void _loadLevel() {
+    Future.delayed(
+      const Duration(seconds: 1),
+      () {
+        final world = Level1(levelName: levelList[levelIndex], player: player);
+        cam = CameraComponent.withFixedResolution(
+          world: world,
+          width: 640,
+          height: 360,
+        );
+        cam.viewfinder.anchor = Anchor.topLeft;
+        addAll([world, cam]);
+      },
+    );
   }
 }

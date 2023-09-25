@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:action_adventure/Components/checkpooint.dart';
 import 'package:action_adventure/Components/collision_block.dart';
 import 'package:action_adventure/Components/fruit_component.dart';
 import 'package:action_adventure/Components/player.dart';
@@ -91,6 +92,13 @@ class Level1 extends World {
               size: Vector2(spawnPoint.width, spawnPoint.height),
             );
             add(saw);
+            break;
+          case "Checkpoint":
+            final checkPoint = CheckPoint(
+              position: Vector2(spawnPoint.x, spawnPoint.y),
+              size: Vector2(spawnPoint.width, spawnPoint.height),
+            );
+            add(checkPoint);
             break;
           default:
         }
