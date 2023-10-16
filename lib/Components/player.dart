@@ -43,8 +43,10 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation fadingAnimation;
 
   final double _gravity = 9.8;
-  final double _jumpForce = 280;
+  final double _jumpForce = 260;
   final double _terminalVelocity = 300;
+  double fixedDeltaTime = 1 / 60;
+  double accumelatedTime = 0;
   double horizontalMovement = 0;
   double moveSpeed = 100;
   Vector2 velocity = Vector2.zero();
@@ -72,12 +74,16 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void update(double dt) {
-    if (!died && !reachedCheckedPoint) {
-      _updatePlayerState();
-      _updatePlayerMovement(dt);
-      _checkHorizontalCollisions();
-      _applyGravity(dt);
-      _checkVerticalCollisions();
+    accumelatedTime += dt;
+    while (accumelatedTime >= fixedDeltaTime) {
+      if (!died && !reachedCheckedPoint) {
+        _updatePlayerState();
+        _updatePlayerMovement(fixedDeltaTime);
+        _checkHorizontalCollisions();
+        _applyGravity(fixedDeltaTime);
+        _checkVerticalCollisions();
+      }
+      accumelatedTime -= fixedDeltaTime;
     }
     super.update(dt);
   }
