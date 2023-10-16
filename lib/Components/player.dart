@@ -61,7 +61,6 @@ class Player extends SpriteAnimationGroupComponent
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
-    // debugMode = true;
     add(
       RectangleHitbox(
         position: Vector2(hitbox.offsetX, hitbox.offsetY),
