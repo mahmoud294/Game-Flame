@@ -19,6 +19,7 @@ class JumbButton extends SpriteComponent
     game.player.hasJumped = true;
     super.onTapDown(event);
   }
+
   @override
   void onTapUp(TapUpEvent event) {
     game.player.hasJumped = false;
