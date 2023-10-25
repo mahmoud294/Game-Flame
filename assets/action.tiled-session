@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "tiles/level-01.tmx",
+    "activeFile": "tiles/level-02.tmx",
     "expandedProjectPaths": [
         "worlds",
         "tiles",
@@ -66,6 +66,7 @@
     "map.tileWidth": 16,
     "map.width": 40,
     "openFiles": [
+        "tiles/level-02.tmx",
         "tiles/level-01.tmx"
     ],
     "project": "action.tiled-project",
