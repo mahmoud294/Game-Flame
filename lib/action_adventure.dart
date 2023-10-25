@@ -16,7 +16,7 @@ class ActionAdventure extends FlameGame
         HasCollisionDetection,
         TapCallbacks {
   final Player player = Player(character: "Virtual Guy");
-  List<String> levelList = ["level-01", "level-01"];
+  List<String> levelList = ["level-02", "level-01"];
   int levelIndex = 0;
   late JoystickComponent joystickComponent;
   @override

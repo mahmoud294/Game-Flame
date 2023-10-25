@@ -70,6 +70,7 @@ flutter:
     - assets/Free/Background/
     - assets/Free/Terrain/
     - assets/Free/HUD/
+    - assets/Free/Enemies/Chicken/
     - assets/Free/Main Characters/Mask Dude/
     - assets/Free/Main Characters/Ninja Frog/
     - assets/Free/Items/Fruits/

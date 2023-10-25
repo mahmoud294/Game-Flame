@@ -12,9 +12,9 @@
     "fileStates": {
         "tiles/level-01.tmx": {
             "scale": 1.5,
-            "selectedLayer": 1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 396.99999999999994,
+                "x": 393.66666666666663,
                 "y": 276.33333333333337
             }
         },
@@ -22,11 +22,11 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1,
-            "selectedLayer": 1,
+            "scale": 2,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 318.5,
-                "y": 183.5
+                "x": 290.25,
+                "y": 181.25
             }
         },
         "tiles/level-02.tsx": {
@@ -72,8 +72,8 @@
     "property.type": "float",
     "recentFiles": [
         "tiles/level-01.tmx",
-        "tiles/world.tsx",
         "tiles/level-02.tmx",
+        "tiles/world.tsx",
         "tiles/level-02.tsx",
         "worlds/world.tsx",
         "worlds/level-01.tmx",
