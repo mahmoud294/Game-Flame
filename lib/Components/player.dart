@@ -9,6 +9,7 @@ import 'package:action_adventure/Components/util.dart';
 import 'package:action_adventure/action_adventure.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
 
 enum PlayerState {
@@ -105,7 +106,10 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+  void onCollisionStart(
+    Set<Vector2> intersectionPoints,
+    PositionComponent other,
+  ) {
     if (other is Fruit) {
       other.onCollidedFruit();
     } else if (other is Saw) {
@@ -113,7 +117,7 @@ class Player extends SpriteAnimationGroupComponent
     } else if (other is CheckPoint) {
       _reachCheckPoint();
     }
-    super.onCollision(intersectionPoints, other);
+    super.onCollisionStart(intersectionPoints, other);
   }
 
   void _loadAllAnimations() {
@@ -121,7 +125,7 @@ class Player extends SpriteAnimationGroupComponent
     runningAnimation = _spriteAnimation('Run', 12);
     jumpingAnimation = _spriteAnimation('Jump', 1);
     fallingAnimation = _spriteAnimation('Fall', 1);
-    disappearingAnimation = _spriteAnimation("Hit", 7);
+    disappearingAnimation = _spriteAnimation("Hit", 7)..loop = false;
     appearingAnimation = _appearingAnimation();
     fadingAnimation = _fadingAnimation();
 
@@ -157,6 +161,7 @@ class Player extends SpriteAnimationGroupComponent
         amount: 7,
         stepTime: stepTime,
         textureSize: Vector2.all(96),
+        loop: false,
       ),
     );
   }
@@ -168,6 +173,7 @@ class Player extends SpriteAnimationGroupComponent
         amount: 7,
         stepTime: stepTime,
         textureSize: Vector2.all(96),
+        loop: false,
       ),
     );
   }
@@ -206,6 +212,7 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _playerJump(double dt) {
+    FlameAudio.play("jump.wav", volume: game.soundVolume);
     velocity.y = -_jumpForce;
     position.y += velocity.y * dt;
     isOnGround = false;
@@ -265,30 +272,32 @@ class Player extends SpriteAnimationGroupComponent
     }
   }
 
-  void _respawn() {
+  Future<void> resetAnimation() async {}
+
+  void _respawn() async {
+    FlameAudio.play("explosion.wav", volume: game.soundVolume);
+
     died = true;
     current = PlayerState.disappearing;
+    await animationTicker?.completed;
+    animationTicker?.reset();
+    scale.x = 1;
+    position = Vector2(firstPosition!.x, firstPosition!.y) - Vector2.all(32);
+    current = PlayerState.appearing;
+    await animationTicker?.completed;
+    animationTicker?.reset();
+    velocity = Vector2.zero();
+    position = Vector2(firstPosition!.x, firstPosition!.y);
+    _updatePlayerState();
     Future.delayed(
-      const Duration(milliseconds: 350),
-      () {
-        scale.x = 1;
-        position =
-            Vector2(firstPosition!.x, firstPosition!.y) - Vector2.all(32);
-        current = PlayerState.appearing;
-        Future.delayed(const Duration(milliseconds: 350), () {
-          velocity = Vector2.zero();
-          position = Vector2(firstPosition!.x, firstPosition!.y);
-          _updatePlayerState();
-          Future.delayed(
-            const Duration(milliseconds: 400),
-            () => died = false,
-          );
-        });
-      },
+      const Duration(milliseconds: 400),
+      () => died = false,
     );
   }
 
-  void _reachCheckPoint() {
+  void _reachCheckPoint() async {
+    FlameAudio.play("jump.wav", volume: game.soundVolume);
+
     reachedCheckedPoint = true;
     if (scale.x > 0) {
       position = position - Vector2.all(32);
@@ -296,16 +305,21 @@ class Player extends SpriteAnimationGroupComponent
       position = position + Vector2(32, -32);
     }
     current = PlayerState.fading;
+    await animationTicker?.completed;
+    animationTicker?.reset();
+
+    reachedCheckedPoint = false;
+    position = Vector2.all(-640);
     Future.delayed(
-      const Duration(milliseconds: 350),
+      const Duration(seconds: 3),
       () {
-        reachedCheckedPoint = false;
-        position = Vector2.all(-640);
-        Future.delayed(
-          const Duration(seconds: 3),
-          () {},
-        );
+        game.loadnextLevel();
       },
     );
+    // Future.delayed(
+    //   const Duration(milliseconds: 350),
+    //   () {
+    //   },
+    // );
   }
 }

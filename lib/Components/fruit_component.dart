@@ -4,6 +4,7 @@ import 'package:action_adventure/Components/custom_hitbox.dart';
 import 'package:action_adventure/action_adventure.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 
 class Fruit extends SpriteAnimationComponent
     with HasGameRef<ActionAdventure>, CollisionCallbacks {
@@ -33,8 +34,11 @@ class Fruit extends SpriteAnimationComponent
     return super.onLoad();
   }
 
-  void onCollidedFruit() {
+  void onCollidedFruit() async {
     if (!isCollected) {
+      isCollected = true;
+      FlameAudio.play("pickupCoin.wav", volume: game.soundVolume);
+
       animation = SpriteAnimation.fromFrameData(
         game.images.fromCache("Items/Fruits/Collected.png"),
         SpriteAnimationData.sequenced(
@@ -44,11 +48,8 @@ class Fruit extends SpriteAnimationComponent
           loop: false,
         ),
       );
-      isCollected = true;
+      await animationTicker?.completed;
+      removeFromParent();
     }
-    Future.delayed(
-      const Duration(milliseconds: 400),
-      () => removeFromParent(),
-    );
   }
 }

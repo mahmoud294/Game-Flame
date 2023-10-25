@@ -15,8 +15,8 @@ class ActionAdventure extends FlameGame
         DragCallbacks,
         HasCollisionDetection,
         TapCallbacks {
-  final Player player = Player();
-  List<String> levelList = ["level-01", "level-02"];
+  final Player player = Player(character: "Virtual Guy");
+  List<String> levelList = ["level-01", "level-01"];
   int levelIndex = 0;
   late JoystickComponent joystickComponent;
   @override
@@ -24,6 +24,8 @@ class ActionAdventure extends FlameGame
   late CameraComponent cam;
   bool showJoystick =
       Platform.isAndroid || Platform.isIOS || Platform.isFuchsia;
+  bool playSound = false;
+  double soundVolume = 1.0;
   @override
   FutureOr<void> onLoad() async {
     images.prefix = "assets/Free/";
@@ -80,8 +82,12 @@ class ActionAdventure extends FlameGame
   }
 
   void loadnextLevel() {
+    removeWhere((component) => component is Level1);
     if (levelIndex < levelList.length) {
       levelIndex++;
+      _loadLevel();
+    } else {
+      levelIndex = 0;
       _loadLevel();
     }
   }

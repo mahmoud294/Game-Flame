@@ -9,7 +9,6 @@ class CheckPoint extends SpriteAnimationComponent
     with HasGameRef<ActionAdventure>, CollisionCallbacks {
   CheckPoint({Vector2? size, Vector2? position})
       : super(size: size, position: position);
-  bool _reachedCheckpoint = false;
   @override
   FutureOr<void> onLoad() {
     animation = SpriteAnimation.fromFrameData(
@@ -32,26 +31,17 @@ class CheckPoint extends SpriteAnimationComponent
   }
 
   @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    // if (other is Player && !_reachedCheckpoint) {
-    //   _reachCheckpoint();
-    // }
-    super.onCollision(intersectionPoints, other);
-  }
-
-  @override
   void onCollisionStart(
     Set<Vector2> intersectionPoints,
     PositionComponent other,
   ) {
-    if (other is Player && !_reachedCheckpoint) {
+    if (other is Player) {
       _reachCheckpoint();
     }
     super.onCollisionStart(intersectionPoints, other);
   }
 
-  void _reachCheckpoint() {
-    _reachedCheckpoint = true;
+  void _reachCheckpoint() async {
     animation = SpriteAnimation.fromFrameData(
       game.images.fromCache(
         "Items/Checkpoints/Checkpoint/Checkpoint (Flag Out) (64x64).png",
@@ -63,17 +53,16 @@ class CheckPoint extends SpriteAnimationComponent
         loop: false,
       ),
     );
-    Future.delayed(
-      const Duration(milliseconds: 1300),
-      () => animation = animation = SpriteAnimation.fromFrameData(
-        game.images.fromCache(
-          "Items/Checkpoints/Checkpoint/Checkpoint (Flag Idle)(64x64).png",
-        ),
-        SpriteAnimationData.sequenced(
-          amount: 10,
-          stepTime: 0.05,
-          textureSize: Vector2.all(64),
-        ),
+    await animationTicker?.completed;
+
+    animation = animation = SpriteAnimation.fromFrameData(
+      game.images.fromCache(
+        "Items/Checkpoints/Checkpoint/Checkpoint (Flag Idle)(64x64).png",
+      ),
+      SpriteAnimationData.sequenced(
+        amount: 10,
+        stepTime: 0.05,
+        textureSize: Vector2.all(64),
       ),
     );
   }
