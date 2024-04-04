@@ -33,7 +33,6 @@ class Chicken extends SpriteAnimationGroupComponent
   double targetDirection = -1;
   @override
   FutureOr<void> onLoad() {
-    debugMode = true;
     player = game.player;
     _loadAnimation();
     _calcualteRange();
