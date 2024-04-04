@@ -3,18 +3,18 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "tiles/level-02.tmx",
+    "activeFile": "tiles/level-01.tmx",
     "expandedProjectPaths": [
-        "worlds",
+        ".",
         "tiles",
-        "."
+        "worlds"
     ],
     "fileStates": {
         "tiles/level-01.tmx": {
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 393.66666666666663,
+                "x": 392.99999999999994,
                 "y": 276.33333333333337
             }
         },
@@ -25,8 +25,8 @@
             "scale": 2,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 290.25,
-                "y": 181.25
+                "x": 289.75,
+                "y": 180.75
             }
         },
         "tiles/level-02.tsx": {
@@ -72,8 +72,8 @@
     "project": "action.tiled-project",
     "property.type": "float",
     "recentFiles": [
-        "tiles/level-01.tmx",
         "tiles/level-02.tmx",
+        "tiles/level-01.tmx",
         "tiles/world.tsx",
         "tiles/level-02.tsx",
         "worlds/world.tsx",
